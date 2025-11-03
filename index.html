@@ -1,280 +1,562 @@
-import React, { useState } from 'react';
-import { Scatter } from 'recharts';
-import { ScatterChart, XAxis, YAxis, ZAxis, Tooltip, Legend, ResponsiveContainer, Cell, ReferenceLine, Label } from 'recharts';
-
-const RithmmAdQuadrant = () => {
-  const [selectedQuadrant, setSelectedQuadrant] = useState(null);
-
-  const ads = [
-    { name: "6-Leg Parlay", cost: 13.74, hook: 22.81, trials: 941, creative: "Large Slip", quadrant: 3 },
-    { name: "Etienne Under", cost: 9.59, hook: 37.68, trials: 1260, creative: "Score + Slip", quadrant: 1 },
-    { name: "Giants TNF", cost: 9.53, hook: 38.68, trials: 1243, creative: "Score + Slip", quadrant: 1 },
-    { name: "TNF 9ers Props", cost: 10.20, hook: 40.57, trials: 844, creative: "Score + Slip", quadrant: 1 },
-    { name: "Flagg Under", cost: 14.95, hook: 31.46, trials: 296, creative: "Fat Head + Slip", quadrant: 2 },
-    { name: "Rockets v Thunder", cost: 14.72, hook: 37.78, trials: 279, creative: "Score Card", quadrant: 4 },
-    { name: "Nico Collins", cost: 13.20, hook: 34.49, trials: 295, creative: "Prop Slip", quadrant: 3 },
-    { name: "Curry Unders", cost: 10.83, hook: 35.43, trials: 303, creative: "Score Card", quadrant: 3 },
-    { name: "CFB Missed Out", cost: 15.69, hook: 34.56, trials: 189, creative: "Prop Slip", quadrant: 2 },
-    { name: "Josh Jefferson", cost: 17.28, hook: 39.37, trials: 111, creative: "Podcast", quadrant: 4 },
-    { name: "7-Leg CFB", cost: 13.03, hook: 18.96, trials: 138, creative: "Large Slip", quadrant: 3 },
-    { name: "Puka Under", cost: 8.04, hook: 36.13, trials: 214, creative: "Prop Slip", quadrant: 1 },
-    { name: "Tre Tucker", cost: 10.41, hook: 39.61, trials: 164, creative: "Fat Head + Slip", quadrant: 1 },
-    { name: "Minnesota Upset", cost: 13.22, hook: 33.21, trials: 127, creative: "Score + Slip", quadrant: 3 },
-    { name: "32-4 Props", cost: 14.35, hook: 25.28, trials: 105, creative: "Golden Nugget", quadrant: 2 },
-    { name: "Back By 10", cost: 12.79, hook: 48.44, trials: 113, creative: "Tweet", quadrant: 1 },
-    { name: "Falcons Upset", cost: 19.52, hook: 36.33, trials: 56, creative: "Fat Head + Slip", quadrant: 4 },
-    { name: "Flagg Under v2", cost: 19.45, hook: 34.86, trials: 55, creative: "Prop Slip", quadrant: 2 },
-    { name: "Fields Over", cost: 19.48, hook: 45.41, trials: 52, creative: "Fat Head + Slip", quadrant: 4 },
-    { name: "Hopkins Catch", cost: 14.58, hook: 43.34, trials: 68, creative: "Prop Slip", quadrant: 4 },
-    { name: "Chiefs SNF", cost: 7.22, hook: 33.62, trials: 135, creative: "Score + Slip", quadrant: 1 },
-  ];
-
-  const medianCost = 13.22;
-  const medianHook = 36.13;
-
-  const quadrantInfo = {
-    1: {
-      title: "🏆 WINNERS",
-      subtitle: "High Hook + Low Cost",
-      color: "#10b981",
-      description: "Scale These Now",
-      characteristics: [
-        "Final Score Card + Prop Slip (60%)",
-        '"Shocked by..." hooks',
-        "Thursday Night Football content",
-        "Avg: $10.50 CPT, 41% hook, 725 trials"
-      ]
-    },
-    2: {
-      title: "⚠️ LOSERS",
-      subtitle: "Low Hook + High Cost",
-      color: "#ef4444",
-      description: "Cut or Redesign",
-      characteristics: [
-        "Single-element visuals",
-        '"How did I..." hooks fail',
-        "Low name recognition players",
-        "Avg: $15.23 CPT, 30% hook, 286 trials"
-      ]
-    },
-    3: {
-      title: "📊 EFFICIENT",
-      subtitle: "Low Hook + Low Cost",
-      color: "#f59e0b",
-      description: "Optimize Creative",
-      characteristics: [
-        "Good cost structure",
-        "Large slip parlays struggle",
-        "Need better opening frames",
-        "Avg: $10.46 CPT, 32% hook, 217 trials"
-      ]
-    },
-    4: {
-      title: "🎯 ENGAGING",
-      subtitle: "High Hook + High Cost",
-      color: "#3b82f6",
-      description: "Scale for Efficiency",
-      characteristics: [
-        "Strong engagement (40.5% hook)",
-        "Fat Head + Prop format works",
-        "Small samples = high variance",
-        "Avg: $17.12 CPT, 40% hook, 113 trials"
-      ]
-    }
-  };
-
-  const getQuadrantColor = (quadrant) => {
-    return quadrantInfo[quadrant]?.color || "#9ca3af";
-  };
-
-  const CustomTooltip = ({ active, payload }) => {
-    if (active && payload && payload.length) {
-      const data = payload[0].payload;
-      return (
-        <div className="bg-white p-4 rounded-lg shadow-xl border-2 border-gray-200">
-          <p className="font-bold text-lg mb-2">{data.name}</p>
-          <p className="text-sm text-gray-600">Cost Per Trial: <span className="font-semibold">${data.cost}</span></p>
-          <p className="text-sm text-gray-600">Hook Rate: <span className="font-semibold">{data.hook}%</span></p>
-          <p className="text-sm text-gray-600">Trials: <span className="font-semibold">{data.trials}</span></p>
-          <p className="text-sm text-gray-600 mt-1">Creative: <span className="font-semibold">{data.creative}</span></p>
-          <p className="text-xs mt-2 px-2 py-1 rounded inline-block" style={{backgroundColor: getQuadrantColor(data.quadrant), color: 'white'}}>
-            {quadrantInfo[data.quadrant]?.title}
-          </p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rithmm Ad Performance Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #581c87 50%, #0f172a 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: #fff;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #a78bfa, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            font-size: 1.25rem;
+            color: #c4b5fd;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .metric-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+        
+        .metric-label {
+            color: #c4b5fd;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .section p {
+            color: #c4b5fd;
+            margin-bottom: 1.5rem;
+        }
+        
+        .quadrant-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            margin: 2rem 0;
+        }
+        
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .legend-dot {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .winner-section {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+        
+        .winner-section h3 {
+            color: #34d399;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .loser-section {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+        
+        .loser-section h3 {
+            color: #f87171;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .ad-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .ad-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .ad-metrics {
+            font-size: 0.875rem;
+            color: #c4b5fd;
+        }
+        
+        .insights {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+        
+        .insights h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .insights p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 1.5rem 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        th {
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+            color: #c4b5fd;
+        }
+        
+        .winner-badge {
+            background: #10b981;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .loser-badge {
+            background: #ef4444;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Rithmm Ad Performance Analysis</h1>
+            <p>Total Spend: $81,043 | Total Trials: 6,988 | Average CPT: $11.60</p>
         </div>
-      );
-    }
-    return null;
-  };
 
-  return (
-    <div className="w-full h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Rithmm Ad Performance Matrix</h1>
-          <p className="text-xl text-gray-600">Hook Rate × Cost Efficiency Analysis</p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Chart */}
-          <div className="lg:col-span-2 bg-white rounded-xl shadow-lg p-6">
-            <ResponsiveContainer width="100%" height={600}>
-              <ScatterChart margin={{ top: 20, right: 60, bottom: 60, left: 60 }}>
-                <XAxis 
-                  type="number" 
-                  dataKey="hook" 
-                  name="Hook Rate" 
-                  unit="%" 
-                  domain={[15, 50]}
-                  label={{ value: 'Hook Rate (%)', position: 'bottom', offset: 40, style: { fontSize: 14, fontWeight: 'bold' } }}
-                />
-                <YAxis 
-                  type="number" 
-                  dataKey="cost" 
-                  name="Cost Per Trial" 
-                  unit="$" 
-                  domain={[5, 22]}
-                  label={{ value: 'Cost Per Trial ($)', angle: -90, position: 'left', offset: 40, style: { fontSize: 14, fontWeight: 'bold' } }}
-                  reversed
-                />
-                <ZAxis type="number" dataKey="trials" range={[100, 1000]} name="Trials" />
-                <Tooltip content={<CustomTooltip />} />
-                <ReferenceLine 
-                  x={medianHook} 
-                  stroke="#6b7280" 
-                  strokeDasharray="5 5" 
-                  strokeWidth={2}
-                />
-                <ReferenceLine 
-                  y={medianCost} 
-                  stroke="#6b7280" 
-                  strokeDasharray="5 5" 
-                  strokeWidth={2}
-                />
-                <Scatter 
-                  data={ads} 
-                  fill="#8884d8"
-                  shape="circle"
-                >
-                  {ads.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={getQuadrantColor(entry.quadrant)}
-                      opacity={selectedQuadrant === null || selectedQuadrant === entry.quadrant ? 0.8 : 0.2}
-                    />
-                  ))}
-                </Scatter>
-              </ScatterChart>
-            </ResponsiveContainer>
-            
-            {/* Quadrant Labels */}
-            <div className="grid grid-cols-2 gap-4 mt-4">
-              <div className="text-right pr-4">
-                <p className="text-sm font-semibold text-orange-600">EFFICIENT</p>
-                <p className="text-xs text-gray-500">Optimize Creative</p>
-              </div>
-              <div className="text-left pl-4">
-                <p className="text-sm font-semibold text-green-600">WINNERS</p>
-                <p className="text-xs text-gray-500">Scale These Now</p>
-              </div>
-              <div className="text-right pr-4">
-                <p className="text-sm font-semibold text-red-600">LOSERS</p>
-                <p className="text-xs text-gray-500">Cut or Redesign</p>
-              </div>
-              <div className="text-left pl-4">
-                <p className="text-sm font-semibold text-blue-600">ENGAGING</p>
-                <p className="text-xs text-gray-500">Scale for Efficiency</p>
-              </div>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">Avg Hook Rate</div>
+                <div class="metric-value">35.4%</div>
             </div>
-          </div>
+            <div class="metric-card">
+                <div class="metric-label">Avg Hold Rate</div>
+                <div class="metric-value">7.8%</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Avg Cost Per Trial</div>
+                <div class="metric-value">$11.60</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Hook → Trial Rate</div>
+                <div class="metric-value">0.39%</div>
+            </div>
+        </div>
 
-          {/* Quadrant Selector & Info */}
-          <div className="space-y-4">
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-lg font-bold mb-4 text-gray-900">Filter by Quadrant</h3>
-              <div className="space-y-2">
-                {[1, 2, 3, 4].map(q => (
-                  <button
-                    key={q}
-                    onClick={() => setSelectedQuadrant(selectedQuadrant === q ? null : q)}
-                    className={`w-full p-3 rounded-lg text-left transition-all ${
-                      selectedQuadrant === q ? 'ring-4 ring-opacity-50' : 'hover:scale-105'
-                    }`}
-                    style={{
-                      backgroundColor: getQuadrantColor(q),
-                      color: 'white',
-                      opacity: selectedQuadrant === null || selectedQuadrant === q ? 1 : 0.4
-                    }}
-                  >
-                    <div className="font-bold">{quadrantInfo[q].title}</div>
-                    <div className="text-xs opacity-90">{quadrantInfo[q].subtitle}</div>
-                  </button>
-                ))}
-                {selectedQuadrant && (
-                  <button
-                    onClick={() => setSelectedQuadrant(null)}
-                    className="w-full p-2 bg-gray-200 text-gray-800 rounded-lg text-sm hover:bg-gray-300"
-                  >
-                    Clear Filter
-                  </button>
-                )}
-              </div>
+        <div class="section">
+            <h2>📊 4-Quadrant Analysis: Hook Rate vs Cost Per Trial</h2>
+            <p>Winners are high hook rate + low cost. Losers are low hook rate + high cost.</p>
+            <div class="quadrant-container">
+                <canvas id="quadrantChart"></canvas>
+            </div>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #10b981;"></div>
+                    <span>Winner (5 ads)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #f59e0b;"></div>
+                    <span>High Hook, High Cost</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #6366f1;"></div>
+                    <span>Low Hook, Low Cost</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: #ef4444;"></div>
+                    <span>Loser (6 ads)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="comparison-grid">
+            <div class="winner-section">
+                <h3>🏆 Winners (5 ads)</h3>
+                <div class="ad-item">
+                    <div class="ad-name">Etienne Under</div>
+                    <div class="ad-metrics">CPT: $9.59 | Hook: 37.7% | Trials: 1,260</div>
+                    <div class="ad-metrics">Creative: Score + Prop</div>
+                </div>
+                <div class="ad-item">
+                    <div class="ad-name">Giants TNF</div>
+                    <div class="ad-metrics">CPT: $9.53 | Hook: 38.7% | Trials: 1,243</div>
+                    <div class="ad-metrics">Creative: Score + Prop</div>
+                </div>
+                <div class="ad-item">
+                    <div class="ad-name">Puka Under</div>
+                    <div class="ad-metrics">CPT: $8.04 | Hook: 36.1% | Trials: 214</div>
+                    <div class="ad-metrics">Creative: Prop Slip</div>
+                </div>
+                <div class="ad-item">
+                    <div class="ad-name">TNF 9ers Props</div>
+                    <div class="ad-metrics">CPT: $10.20 | Hook: 40.6% | Trials: 844</div>
+                    <div class="ad-metrics">Creative: Score + Prop</div>
+                </div>
+                <div class="ad-item">
+                    <div class="ad-name">Chiefs SNF</div>
+                    <div class="ad-metrics">CPT: $7.22 | Hook: 33.6% | Trials: 135</div>
+                    <div class="ad-metrics">Creative: N/A</div>
+                </div>
             </div>
 
-            {selectedQuadrant && (
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <h3 className="text-lg font-bold mb-3" style={{ color: getQuadrantColor(selectedQuadrant) }}>
-                  {quadrantInfo[selectedQuadrant].title}
-                </h3>
-                <p className="text-sm text-gray-600 font-semibold mb-3">
-                  {quadrantInfo[selectedQuadrant].description}
-                </p>
-                <div className="space-y-2">
-                  {quadrantInfo[selectedQuadrant].characteristics.map((char, idx) => (
-                    <div key={idx} className="text-sm text-gray-700 flex items-start">
-                      <span className="mr-2">•</span>
-                      <span>{char}</span>
-                    </div>
-                  ))}
+            <div class="loser-section">
+                <h3>📉 Losers (6 ads)</h3>
+                <div class="ad-item">
+                    <div class="ad-name">6-Leg Morning Slate</div>
+                    <div class="ad-metrics">CPT: $13.74 | Hook: 22.8% | Trials: 941</div>
+                    <div class="ad-metrics">Creative: Large Slip</div>
                 </div>
-                <div className="mt-4 pt-4 border-t border-gray-200">
-                  <p className="text-xs font-semibold text-gray-500 mb-2">
-                    Ads in this quadrant ({ads.filter(a => a.quadrant === selectedQuadrant).length}):
-                  </p>
-                  <div className="space-y-1 max-h-40 overflow-y-auto">
-                    {ads.filter(a => a.quadrant === selectedQuadrant).map((ad, idx) => (
-                      <div key={idx} className="text-xs text-gray-600 bg-gray-50 p-2 rounded">
-                        {ad.name}
-                      </div>
-                    ))}
-                  </div>
+                <div class="ad-item">
+                    <div class="ad-name">Flagg Under</div>
+                    <div class="ad-metrics">CPT: $14.95 | Hook: 31.5% | Trials: 296</div>
+                    <div class="ad-metrics">Creative: Fat Head + Prop</div>
                 </div>
-              </div>
-            )}
-
-            {!selectedQuadrant && (
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <h3 className="text-lg font-bold mb-3 text-gray-900">Key Insights</h3>
-                <div className="space-y-3 text-sm text-gray-700">
-                  <div className="p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
-                    <p className="font-semibold text-green-800">Winning Formula:</p>
-                    <p className="text-xs mt-1">TNF Games + "Shocked by..." + Score Card + Prop Slip</p>
-                  </div>
-                  <div className="p-3 bg-red-50 rounded-lg border-l-4 border-red-500">
-                    <p className="font-semibold text-red-800">Avoid:</p>
-                    <p className="text-xs mt-1">"How did I..." hooks + Single visual elements + Unknown players</p>
-                  </div>
-                  <div className="p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
-                    <p className="font-semibold text-blue-800">Action:</p>
-                    <p className="text-xs mt-1">Scale Winners 3-5x, Cut Losers immediately</p>
-                  </div>
+                <div class="ad-item">
+                    <div class="ad-name">Rockets vs Thunder</div>
+                    <div class="ad-metrics">CPT: $14.72 | Hook: 37.8% | Trials: 279</div>
+                    <div class="ad-metrics">Creative: Score Card</div>
                 </div>
-              </div>
-            )}
-          </div>
+                <div class="ad-item">
+                    <div class="ad-name">32-4 Props</div>
+                    <div class="ad-metrics">CPT: $14.35 | Hook: 25.3% | Trials: 105</div>
+                    <div class="ad-metrics">Creative: Golden Nugget</div>
+                </div>
+                <div class="ad-item">
+                    <div class="ad-name">CFB Sacred Heart</div>
+                    <div class="ad-metrics">CPT: $15.69 | Hook: 34.6% | Trials: 189</div>
+                    <div class="ad-metrics">Creative: Prop Slip</div>
+                </div>
+                <div class="ad-item">
+                    <div class="ad-name">Josh Jefferson</div>
+                    <div class="ad-metrics">CPT: $17.28 | Hook: 39.4% | Trials: 111</div>
+                    <div class="ad-metrics">Creative: Podcast</div>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <div class="section">
+            <h2>📈 Performance by Creative Type</h2>
+            <div class="chart-container">
+                <canvas id="creativeChart"></canvas>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Complete Ad Performance Data</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ad Name</th>
+                        <th>Spend</th>
+                        <th>Trials</th>
+                        <th>CPT</th>
+                        <th>Hook Rate</th>
+                        <th>Creative</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="adTable"></tbody>
+            </table>
+        </div>
+
+        <div class="insights">
+            <h2>🔍 Key Insights</h2>
+            <p>✅ <strong>Winner Formula:</strong> Score Card + Prop Slip creatives dominate the winner quadrant with high hook rates (38-40%) and low CPT ($9-10).</p>
+            <p>✅ <strong>Best Creative Type:</strong> Prop Slip averages the lowest CPT, followed by Score Card formats.</p>
+            <p>⚠️ <strong>Avoid:</strong> Fat Head + Prop creative tends toward higher costs with lower conversion efficiency.</p>
+            <p>📊 <strong>Hook Rate Sweet Spot:</strong> Ads with 36-41% hook rates consistently deliver better value.</p>
+            <p>💡 <strong>Scale Opportunity:</strong> Chiefs SNF has the lowest CPT ($7.22) - consider increasing spend on similar formats.</p>
+            <p>🎯 <strong>Large Slip Warning:</strong> Both large slip ads (6-Leg Morning Slate, 7-Leg Parlay) have low hook rates (~20%) - may need creative refresh.</p>
+        </div>
     </div>
-  );
-};
 
-export default RithmmAdQuadrant;
+    <script>
+        const adData = [
+            { name: "6-Leg Morning Slate", spend: 12926, installs: 2926, trials: 941, hookRate: 22.81, holdRate: 11.25, cpt: 13.74, creative: "Large Slip" },
+            { name: "Etienne Under", spend: 12078, installs: 3629, trials: 1260, hookRate: 37.68, holdRate: 5.97, cpt: 9.59, creative: "Score + Prop" },
+            { name: "Giants TNF", spend: 11843, installs: 3461, trials: 1243, hookRate: 38.68, holdRate: 13.10, cpt: 9.53, creative: "Score + Prop" },
+            { name: "TNF 9ers Props", spend: 8610, installs: 2518, trials: 844, hookRate: 40.57, holdRate: 8.60, cpt: 10.20, creative: "Score + Prop" },
+            { name: "Flagg Under", spend: 4425, installs: 796, trials: 296, hookRate: 31.46, holdRate: 7.11, cpt: 14.95, creative: "Fat Head + Prop" },
+            { name: "Rockets vs Thunder", spend: 4107, installs: 768, trials: 279, hookRate: 37.78, holdRate: 7.18, cpt: 14.72, creative: "Score Card" },
+            { name: "Nico Collins MNF", spend: 3894, installs: 883, trials: 295, hookRate: 34.49, holdRate: 6.31, cpt: 13.20, creative: "Prop Slip" },
+            { name: "Curry Unders", spend: 3280, installs: 787, trials: 303, hookRate: 35.43, holdRate: 6.20, cpt: 10.83, creative: "Score Card" },
+            { name: "CFB Sacred Heart", spend: 2965, installs: 573, trials: 189, hookRate: 34.56, holdRate: 2.94, cpt: 15.69, creative: "Prop Slip" },
+            { name: "Josh Jefferson", spend: 1918, installs: 273, trials: 111, hookRate: 39.37, holdRate: 9.42, cpt: 17.28, creative: "Podcast" },
+            { name: "7-Leg Parlay", spend: 1798, installs: 403, trials: 138, hookRate: 18.96, holdRate: 11.71, cpt: 13.03, creative: "Large Slip" },
+            { name: "Puka Under", spend: 1720, installs: 513, trials: 214, hookRate: 36.13, holdRate: 9.25, cpt: 8.04, creative: "Prop Slip" },
+            { name: "Tre Tucker Under", spend: 1707, installs: 455, trials: 164, hookRate: 39.61, holdRate: 3.47, cpt: 10.41, creative: "Fat Head + Prop" },
+            { name: "Minnesota Upset", spend: 1679, installs: 329, trials: 127, hookRate: 33.21, holdRate: 4.46, cpt: 13.22, creative: "Score + Prop" },
+            { name: "32-4 Props", spend: 1507, installs: 293, trials: 105, hookRate: 25.28, holdRate: 6.13, cpt: 14.35, creative: "Golden Nugget" },
+            { name: "Back By 10", spend: 1446, installs: 271, trials: 113, hookRate: 48.44, holdRate: 6.28, cpt: 12.79, creative: "Tweet" },
+            { name: "Falcons Upset", spend: 1093, installs: 209, trials: 56, hookRate: 36.33, holdRate: 7.65, cpt: 19.52, creative: "Fat Head + Prop" },
+            { name: "Hopkins Catch", spend: 991, installs: 294, trials: 68, hookRate: 43.34, holdRate: 8.59, cpt: 14.58, creative: "Prop Slip" },
+            { name: "Chiefs SNF", spend: 974, installs: 347, trials: 135, hookRate: 33.62, holdRate: 9.12, cpt: 7.22, creative: "N/A" }
+        ];
+
+        const avgHookRate = adData.reduce((sum, ad) => sum + ad.hookRate, 0) / adData.length;
+        const avgCPT = adData.reduce((sum, ad) => sum + ad.cpt, 0) / adData.length;
+
+        // Populate table
+        const tableBody = document.getElementById('adTable');
+        adData.forEach(ad => {
+            const isWinner = ad.hookRate >= avgHookRate && ad.cpt <= avgCPT;
+            const isLoser = ad.hookRate < avgHookRate && ad.cpt > avgCPT;
+            const status = isWinner ? 'Winner' : isLoser ? 'Loser' : 'Mixed';
+            const badgeClass = isWinner ? 'winner-badge' : isLoser ? 'loser-badge' : '';
+            
+            const row = `
+                <tr>
+                    <td>${ad.name}</td>
+                    <td>$${ad.spend.toLocaleString()}</td>
+                    <td>${ad.trials}</td>
+                    <td>$${ad.cpt.toFixed(2)}</td>
+                    <td>${ad.hookRate.toFixed(1)}%</td>
+                    <td>${ad.creative}</td>
+                    <td><span class="${badgeClass}">${status}</span></td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+
+        // Quadrant Chart
+        const quadrantData = adData.map(ad => ({
+            x: ad.hookRate,
+            y: ad.cpt,
+            label: ad.name,
+            color: ad.hookRate >= avgHookRate && ad.cpt <= avgCPT ? '#10b981' :
+                   ad.hookRate >= avgHookRate && ad.cpt > avgCPT ? '#f59e0b' :
+                   ad.hookRate < avgHookRate && ad.cpt <= avgCPT ? '#6366f1' : '#ef4444'
+        }));
+
+        new Chart(document.getElementById('quadrantChart'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Ads',
+                    data: quadrantData,
+                    backgroundColor: quadrantData.map(d => d.color),
+                    pointRadius: 8,
+                    pointHoverRadius: 12
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const ad = adData[context.dataIndex];
+                                return [
+                                    ad.name,
+                                    `Hook Rate: ${ad.hookRate.toFixed(1)}%`,
+                                    `CPT: $${ad.cpt.toFixed(2)}`,
+                                    `Trials: ${ad.trials}`,
+                                    `Creative: ${ad.creative}`
+                                ];
+                            }
+                        }
+                    },
+                    annotation: {
+                        annotations: {
+                            line1: {
+                                type: 'line',
+                                xMin: avgHookRate,
+                                xMax: avgHookRate,
+                                borderColor: 'rgba(255, 255, 255, 0.5)',
+                                borderWidth: 2,
+                                borderDash: [5, 5]
+                            },
+                            line2: {
+                                type: 'line',
+                                yMin: avgCPT,
+                                yMax: avgCPT,
+                                borderColor: 'rgba(255, 255, 255, 0.5)',
+                                borderWidth: 2,
+                                borderDash: [5, 5]
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Hook Rate (%)', color: '#fff' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        ticks: { color: '#fff' }
+                    },
+                    y: {
+                        title: { display: true, text: 'Cost Per Trial ($)', color: '#fff' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        ticks: { color: '#fff' }
+                    }
+                }
+            }
+        });
+
+        // Creative Type Performance Chart
+        const creativeTypes = {};
+        adData.forEach(ad => {
+            if (!creativeTypes[ad.creative]) {
+                creativeTypes[ad.creative] = { totalCPT: 0, totalHook: 0, count: 0 };
+            }
+            creativeTypes[ad.creative].totalCPT += ad.cpt;
+            creativeTypes[ad.creative].totalHook += ad.hookRate;
+            creativeTypes[ad.creative].count += 1;
+        });
+
+        const creativeData = Object.keys(creativeTypes).map(key => ({
+            creative: key,
+            avgCPT: creativeTypes[key].totalCPT / creativeTypes[key].count,
+            avgHook: creativeTypes[key].totalHook / creativeTypes[key].count
+        })).sort((a, b) => a.avgCPT - b.avgCPT);
+
+        new Chart(document.getElementById('creativeChart'), {
+            type: 'bar',
+            data: {
+                labels: creativeData.map(d => d.creative),
+                datasets: [
+                    {
+                        label: 'Avg CPT ($)',
+                        data: creativeData.map(d => d.avgCPT),
+                        backgroundColor: '#a78bfa'
+                    },
+                    {
+                        label: 'Avg Hook Rate (%)',
+                        data: creativeData.map(d => d.avgHook),
+                        backgroundColor: '#34d399'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#fff' }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        ticks: { color: '#fff' }
+                    },
+                    y: {
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        ticks: { color: '#fff' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
