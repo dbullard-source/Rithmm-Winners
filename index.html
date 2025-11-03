@@ -1,0 +1,280 @@
+import React, { useState } from 'react';
+import { Scatter } from 'recharts';
+import { ScatterChart, XAxis, YAxis, ZAxis, Tooltip, Legend, ResponsiveContainer, Cell, ReferenceLine, Label } from 'recharts';
+
+const RithmmAdQuadrant = () => {
+  const [selectedQuadrant, setSelectedQuadrant] = useState(null);
+
+  const ads = [
+    { name: "6-Leg Parlay", cost: 13.74, hook: 22.81, trials: 941, creative: "Large Slip", quadrant: 3 },
+    { name: "Etienne Under", cost: 9.59, hook: 37.68, trials: 1260, creative: "Score + Slip", quadrant: 1 },
+    { name: "Giants TNF", cost: 9.53, hook: 38.68, trials: 1243, creative: "Score + Slip", quadrant: 1 },
+    { name: "TNF 9ers Props", cost: 10.20, hook: 40.57, trials: 844, creative: "Score + Slip", quadrant: 1 },
+    { name: "Flagg Under", cost: 14.95, hook: 31.46, trials: 296, creative: "Fat Head + Slip", quadrant: 2 },
+    { name: "Rockets v Thunder", cost: 14.72, hook: 37.78, trials: 279, creative: "Score Card", quadrant: 4 },
+    { name: "Nico Collins", cost: 13.20, hook: 34.49, trials: 295, creative: "Prop Slip", quadrant: 3 },
+    { name: "Curry Unders", cost: 10.83, hook: 35.43, trials: 303, creative: "Score Card", quadrant: 3 },
+    { name: "CFB Missed Out", cost: 15.69, hook: 34.56, trials: 189, creative: "Prop Slip", quadrant: 2 },
+    { name: "Josh Jefferson", cost: 17.28, hook: 39.37, trials: 111, creative: "Podcast", quadrant: 4 },
+    { name: "7-Leg CFB", cost: 13.03, hook: 18.96, trials: 138, creative: "Large Slip", quadrant: 3 },
+    { name: "Puka Under", cost: 8.04, hook: 36.13, trials: 214, creative: "Prop Slip", quadrant: 1 },
+    { name: "Tre Tucker", cost: 10.41, hook: 39.61, trials: 164, creative: "Fat Head + Slip", quadrant: 1 },
+    { name: "Minnesota Upset", cost: 13.22, hook: 33.21, trials: 127, creative: "Score + Slip", quadrant: 3 },
+    { name: "32-4 Props", cost: 14.35, hook: 25.28, trials: 105, creative: "Golden Nugget", quadrant: 2 },
+    { name: "Back By 10", cost: 12.79, hook: 48.44, trials: 113, creative: "Tweet", quadrant: 1 },
+    { name: "Falcons Upset", cost: 19.52, hook: 36.33, trials: 56, creative: "Fat Head + Slip", quadrant: 4 },
+    { name: "Flagg Under v2", cost: 19.45, hook: 34.86, trials: 55, creative: "Prop Slip", quadrant: 2 },
+    { name: "Fields Over", cost: 19.48, hook: 45.41, trials: 52, creative: "Fat Head + Slip", quadrant: 4 },
+    { name: "Hopkins Catch", cost: 14.58, hook: 43.34, trials: 68, creative: "Prop Slip", quadrant: 4 },
+    { name: "Chiefs SNF", cost: 7.22, hook: 33.62, trials: 135, creative: "Score + Slip", quadrant: 1 },
+  ];
+
+  const medianCost = 13.22;
+  const medianHook = 36.13;
+
+  const quadrantInfo = {
+    1: {
+      title: "🏆 WINNERS",
+      subtitle: "High Hook + Low Cost",
+      color: "#10b981",
+      description: "Scale These Now",
+      characteristics: [
+        "Final Score Card + Prop Slip (60%)",
+        '"Shocked by..." hooks',
+        "Thursday Night Football content",
+        "Avg: $10.50 CPT, 41% hook, 725 trials"
+      ]
+    },
+    2: {
+      title: "⚠️ LOSERS",
+      subtitle: "Low Hook + High Cost",
+      color: "#ef4444",
+      description: "Cut or Redesign",
+      characteristics: [
+        "Single-element visuals",
+        '"How did I..." hooks fail',
+        "Low name recognition players",
+        "Avg: $15.23 CPT, 30% hook, 286 trials"
+      ]
+    },
+    3: {
+      title: "📊 EFFICIENT",
+      subtitle: "Low Hook + Low Cost",
+      color: "#f59e0b",
+      description: "Optimize Creative",
+      characteristics: [
+        "Good cost structure",
+        "Large slip parlays struggle",
+        "Need better opening frames",
+        "Avg: $10.46 CPT, 32% hook, 217 trials"
+      ]
+    },
+    4: {
+      title: "🎯 ENGAGING",
+      subtitle: "High Hook + High Cost",
+      color: "#3b82f6",
+      description: "Scale for Efficiency",
+      characteristics: [
+        "Strong engagement (40.5% hook)",
+        "Fat Head + Prop format works",
+        "Small samples = high variance",
+        "Avg: $17.12 CPT, 40% hook, 113 trials"
+      ]
+    }
+  };
+
+  const getQuadrantColor = (quadrant) => {
+    return quadrantInfo[quadrant]?.color || "#9ca3af";
+  };
+
+  const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      const data = payload[0].payload;
+      return (
+        <div className="bg-white p-4 rounded-lg shadow-xl border-2 border-gray-200">
+          <p className="font-bold text-lg mb-2">{data.name}</p>
+          <p className="text-sm text-gray-600">Cost Per Trial: <span className="font-semibold">${data.cost}</span></p>
+          <p className="text-sm text-gray-600">Hook Rate: <span className="font-semibold">{data.hook}%</span></p>
+          <p className="text-sm text-gray-600">Trials: <span className="font-semibold">{data.trials}</span></p>
+          <p className="text-sm text-gray-600 mt-1">Creative: <span className="font-semibold">{data.creative}</span></p>
+          <p className="text-xs mt-2 px-2 py-1 rounded inline-block" style={{backgroundColor: getQuadrantColor(data.quadrant), color: 'white'}}>
+            {quadrantInfo[data.quadrant]?.title}
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <div className="w-full h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Rithmm Ad Performance Matrix</h1>
+          <p className="text-xl text-gray-600">Hook Rate × Cost Efficiency Analysis</p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Chart */}
+          <div className="lg:col-span-2 bg-white rounded-xl shadow-lg p-6">
+            <ResponsiveContainer width="100%" height={600}>
+              <ScatterChart margin={{ top: 20, right: 60, bottom: 60, left: 60 }}>
+                <XAxis 
+                  type="number" 
+                  dataKey="hook" 
+                  name="Hook Rate" 
+                  unit="%" 
+                  domain={[15, 50]}
+                  label={{ value: 'Hook Rate (%)', position: 'bottom', offset: 40, style: { fontSize: 14, fontWeight: 'bold' } }}
+                />
+                <YAxis 
+                  type="number" 
+                  dataKey="cost" 
+                  name="Cost Per Trial" 
+                  unit="$" 
+                  domain={[5, 22]}
+                  label={{ value: 'Cost Per Trial ($)', angle: -90, position: 'left', offset: 40, style: { fontSize: 14, fontWeight: 'bold' } }}
+                  reversed
+                />
+                <ZAxis type="number" dataKey="trials" range={[100, 1000]} name="Trials" />
+                <Tooltip content={<CustomTooltip />} />
+                <ReferenceLine 
+                  x={medianHook} 
+                  stroke="#6b7280" 
+                  strokeDasharray="5 5" 
+                  strokeWidth={2}
+                />
+                <ReferenceLine 
+                  y={medianCost} 
+                  stroke="#6b7280" 
+                  strokeDasharray="5 5" 
+                  strokeWidth={2}
+                />
+                <Scatter 
+                  data={ads} 
+                  fill="#8884d8"
+                  shape="circle"
+                >
+                  {ads.map((entry, index) => (
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={getQuadrantColor(entry.quadrant)}
+                      opacity={selectedQuadrant === null || selectedQuadrant === entry.quadrant ? 0.8 : 0.2}
+                    />
+                  ))}
+                </Scatter>
+              </ScatterChart>
+            </ResponsiveContainer>
+            
+            {/* Quadrant Labels */}
+            <div className="grid grid-cols-2 gap-4 mt-4">
+              <div className="text-right pr-4">
+                <p className="text-sm font-semibold text-orange-600">EFFICIENT</p>
+                <p className="text-xs text-gray-500">Optimize Creative</p>
+              </div>
+              <div className="text-left pl-4">
+                <p className="text-sm font-semibold text-green-600">WINNERS</p>
+                <p className="text-xs text-gray-500">Scale These Now</p>
+              </div>
+              <div className="text-right pr-4">
+                <p className="text-sm font-semibold text-red-600">LOSERS</p>
+                <p className="text-xs text-gray-500">Cut or Redesign</p>
+              </div>
+              <div className="text-left pl-4">
+                <p className="text-sm font-semibold text-blue-600">ENGAGING</p>
+                <p className="text-xs text-gray-500">Scale for Efficiency</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Quadrant Selector & Info */}
+          <div className="space-y-4">
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h3 className="text-lg font-bold mb-4 text-gray-900">Filter by Quadrant</h3>
+              <div className="space-y-2">
+                {[1, 2, 3, 4].map(q => (
+                  <button
+                    key={q}
+                    onClick={() => setSelectedQuadrant(selectedQuadrant === q ? null : q)}
+                    className={`w-full p-3 rounded-lg text-left transition-all ${
+                      selectedQuadrant === q ? 'ring-4 ring-opacity-50' : 'hover:scale-105'
+                    }`}
+                    style={{
+                      backgroundColor: getQuadrantColor(q),
+                      color: 'white',
+                      opacity: selectedQuadrant === null || selectedQuadrant === q ? 1 : 0.4
+                    }}
+                  >
+                    <div className="font-bold">{quadrantInfo[q].title}</div>
+                    <div className="text-xs opacity-90">{quadrantInfo[q].subtitle}</div>
+                  </button>
+                ))}
+                {selectedQuadrant && (
+                  <button
+                    onClick={() => setSelectedQuadrant(null)}
+                    className="w-full p-2 bg-gray-200 text-gray-800 rounded-lg text-sm hover:bg-gray-300"
+                  >
+                    Clear Filter
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {selectedQuadrant && (
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                <h3 className="text-lg font-bold mb-3" style={{ color: getQuadrantColor(selectedQuadrant) }}>
+                  {quadrantInfo[selectedQuadrant].title}
+                </h3>
+                <p className="text-sm text-gray-600 font-semibold mb-3">
+                  {quadrantInfo[selectedQuadrant].description}
+                </p>
+                <div className="space-y-2">
+                  {quadrantInfo[selectedQuadrant].characteristics.map((char, idx) => (
+                    <div key={idx} className="text-sm text-gray-700 flex items-start">
+                      <span className="mr-2">•</span>
+                      <span>{char}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <p className="text-xs font-semibold text-gray-500 mb-2">
+                    Ads in this quadrant ({ads.filter(a => a.quadrant === selectedQuadrant).length}):
+                  </p>
+                  <div className="space-y-1 max-h-40 overflow-y-auto">
+                    {ads.filter(a => a.quadrant === selectedQuadrant).map((ad, idx) => (
+                      <div key={idx} className="text-xs text-gray-600 bg-gray-50 p-2 rounded">
+                        {ad.name}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {!selectedQuadrant && (
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                <h3 className="text-lg font-bold mb-3 text-gray-900">Key Insights</h3>
+                <div className="space-y-3 text-sm text-gray-700">
+                  <div className="p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                    <p className="font-semibold text-green-800">Winning Formula:</p>
+                    <p className="text-xs mt-1">TNF Games + "Shocked by..." + Score Card + Prop Slip</p>
+                  </div>
+                  <div className="p-3 bg-red-50 rounded-lg border-l-4 border-red-500">
+                    <p className="font-semibold text-red-800">Avoid:</p>
+                    <p className="text-xs mt-1">"How did I..." hooks + Single visual elements + Unknown players</p>
+                  </div>
+                  <div className="p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                    <p className="font-semibold text-blue-800">Action:</p>
+                    <p className="text-xs mt-1">Scale Winners 3-5x, Cut Losers immediately</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default RithmmAdQuadrant;
