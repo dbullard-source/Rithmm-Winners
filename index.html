@@ -68,6 +68,149 @@
             color: #333;
         }
 
+        .patterns-section {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .patterns-section h2 {
+            font-size: 1.75rem;
+            color: #333;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .patterns-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .pattern-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 24px;
+            border-left: 4px solid #667eea;
+        }
+
+        .pattern-card h3 {
+            font-size: 1.25rem;
+            color: #333;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pattern-card .icon {
+            font-size: 1.5rem;
+        }
+
+        .pattern-list {
+            list-style: none;
+        }
+
+        .pattern-list li {
+            padding: 8px 0;
+            color: #495057;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .pattern-list li:last-child {
+            border-bottom: none;
+        }
+
+        .pattern-list li strong {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .pattern-highlight {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+
+        .pattern-highlight .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 0.9rem;
+        }
+
+        .pattern-highlight .stat-label {
+            color: #666;
+        }
+
+        .pattern-highlight .stat-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .visual-patterns {
+            margin-top: 32px;
+        }
+
+        .visual-patterns h3 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .visual-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .visual-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .visual-card h4 {
+            font-size: 1.1rem;
+            color: #667eea;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .visual-card .metric-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 0.85rem;
+        }
+
+        .visual-card .examples {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .visual-card .examples p {
+            font-size: 0.8rem;
+            color: #666;
+            font-style: italic;
+            margin: 4px 0;
+        }
+
         .matrix-container {
             background: white;
             border-radius: 16px;
@@ -310,10 +453,286 @@
             </div>
         </div>
 
+        <!-- WINNING PATTERNS SECTION -->
+        <div class="patterns-section">
+            <h2>🏆 Winning Hook & Visual Patterns</h2>
+            
+            <div class="patterns-grid">
+                <div class="pattern-card">
+                    <h3><span class="icon">💬</span> Hook Formula Winners</h3>
+                    <ul class="pattern-list">
+                        <li><strong>"Shocked by..."</strong> - Avg Hook Rate: 38.7%
+                            <div class="pattern-highlight">
+                                <div class="stat">
+                                    <span class="stat-label">TNF 49ers</span>
+                                    <span class="stat-value">40.57%</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Giants TNF</span>
+                                    <span class="stat-value">38.68%</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Etienne Under</span>
+                                    <span class="stat-value">37.68%</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li><strong>"Didn't expect..."</strong> - Avg Hook Rate: 36.7%
+                            <div class="pattern-highlight">
+                                <div class="stat">
+                                    <span class="stat-label">Fields Over</span>
+                                    <span class="stat-value">45.41%</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Puka Under</span>
+                                    <span class="stat-value">36.13%</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Nico Collins</span>
+                                    <span class="stat-value">34.49%</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li><strong>"How did I..."</strong> - Mixed Performance
+                            <div class="pattern-highlight">
+                                <div class="stat">
+                                    <span class="stat-label">Tre Tucker</span>
+                                    <span class="stat-value">39.61%</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">6-Leg Parlay</span>
+                                    <span class="stat-value">22.81%</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pattern-card">
+                    <h3><span class="icon">⚡</span> Content Type Winners</h3>
+                    <ul class="pattern-list">
+                        <li><strong>Thursday Night Football</strong>
+                            <div class="pattern-highlight">
+                                <div class="stat">
+                                    <span class="stat-label">Avg Hook Rate</span>
+                                    <span class="stat-value">39.0%</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Avg CPT</span>
+                                    <span class="stat-value">$9.77</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Total Spend</span>
+                                    <span class="stat-value">$20,453</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li><strong>Single Player Props</strong> - High engagement, variable cost
+                            <div class="pattern-highlight">
+                                <div class="stat">
+                                    <span class="stat-label">Best: Tre Tucker</span>
+                                    <span class="stat-value">39.61% / $10.41</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Best: Puka</span>
+                                    <span class="stat-value">36.13% / $8.04</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li><strong>Multi-Leg Parlays</strong> - Lower engagement
+                            <div class="pattern-highlight">
+                                <div class="stat">
+                                    <span class="stat-label">6-Leg Average</span>
+                                    <span class="stat-value">22.81% hook rate</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">7-Leg Average</span>
+                                    <span class="stat-value">18.96% hook rate</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pattern-card">
+                    <h3><span class="icon">📅</span> Timing Insights</h3>
+                    <ul class="pattern-list">
+                        <li><strong>Primetime Games</strong> (TNF, SNF, MNF)
+                            <div class="pattern-highlight">
+                                <div class="stat">
+                                    <span class="stat-label">Combined Hook Rate</span>
+                                    <span class="stat-value">37.8%</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Combined CPT</span>
+                                    <span class="stat-value">$10.71</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li><strong>Upset Narratives</strong>
+                            <div class="pattern-highlight">
+                                <div class="stat">
+                                    <span class="stat-label">Minnesota Upset</span>
+                                    <span class="stat-value">33.21% / $13.22</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Falcons Upset</span>
+                                    <span class="stat-value">36.33% / $19.52</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li><strong>Opening Night</strong>
+                            <div class="pattern-highlight">
+                                <div class="stat">
+                                    <span class="stat-label">Curry Unders</span>
+                                    <span class="stat-value">35.43% / $10.83</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Rockets v Thunder</span>
+                                    <span class="stat-value">37.78% / $14.72</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- VISUAL PATTERNS -->
+            <div class="visual-patterns">
+                <h3>🎨 Visual Format Performance</h3>
+                <div class="visual-grid">
+                    <div class="visual-card">
+                        <h4>Final Score Card + Prop Slip</h4>
+                        <div class="metric-row">
+                            <span>Avg Hook Rate:</span>
+                            <strong>38.5%</strong>
+                        </div>
+                        <div class="metric-row">
+                            <span>Avg CPT:</span>
+                            <strong>$10.44</strong>
+                        </div>
+                        <div class="metric-row">
+                            <span>Total Spend:</span>
+                            <strong>$27,321</strong>
+                        </div>
+                        <div class="examples">
+                            <p>✅ TNF 49ers: 40.57% hook</p>
+                            <p>✅ Giants TNF: 38.68% hook</p>
+                            <p>✅ Etienne Under: 37.68% hook</p>
+                        </div>
+                    </div>
+
+                    <div class="visual-card">
+                        <h4>Prop Slip Only</h4>
+                        <div class="metric-row">
+                            <span>Avg Hook Rate:</span>
+                            <strong>36.7%</strong>
+                        </div>
+                        <div class="metric-row">
+                            <span>Avg CPT:</span>
+                            <strong>$10.69</strong>
+                        </div>
+                        <div class="metric-row">
+                            <span>Total Spend:</span>
+                            <strong>$9,310</strong>
+                        </div>
+                        <div class="examples">
+                            <p>✅ Tre Tucker: 39.61% hook</p>
+                            <p>✅ Puka Under: 36.13% hook</p>
+                            <p>✅ Nico Collins: 34.49% hook</p>
+                        </div>
+                    </div>
+
+                    <div class="visual-card">
+                        <h4>Fat Head + Prop Slip</h4>
+                        <div class="metric-row">
+                            <span>Avg Hook Rate:</span>
+                            <strong>37.1%</strong>
+                        </div>
+                        <div class="metric-row">
+                            <span>Avg CPT:</span>
+                        <strong>$16.65</strong>
+                        </div>
+                        <div class="metric-row">
+                            <span>Total Spend:</span>
+                            <strong>$6,508</strong>
+                        </div>
+                        <div class="examples">
+                            <p>⚠️ Higher CPT despite good engagement</p>
+                            <p>✅ Fields: 45.41% hook but $19.48 CPT</p>
+                            <p>✅ Flagg: 31.46% hook, $14.95 CPT</p>
+                        </div>
+                    </div>
+
+                    <div class="visual-card">
+                        <h4>Large Slip / Parlay</h4>
+                        <div class="metric-row">
+                            <span>Avg Hook Rate:</span>
+                            <strong>20.9%</strong>
+                        </div>
+                        <div class="metric-row">
+                            <span>Avg CPT:</span>
+                            <strong>$13.39</strong>
+                        </div>
+                        <div class="metric-row">
+                            <span>Total Spend:</span>
+                            <strong>$14,724</strong>
+                        </div>
+                        <div class="examples">
+                            <p>❌ Lowest hook rates overall</p>
+                            <p>❌ 6-Leg: 22.81% hook</p>
+                            <p>❌ 7-Leg: 18.96% hook</p>
+                        </div>
+                    </div>
+
+                    <div class="visual-card">
+                        <h4>Podcast Format</h4>
+                        <div class="metric-row">
+                            <span>Hook Rate:</span>
+                            <strong>39.37%</strong>
+                        </div>
+                        <div class="metric-row">
+                            <span>CPT:</span>
+                            <strong>$17.28</strong>
+                        </div>
+                        <div class="metric-row">
+                            <span>Total Spend:</span>
+                            <strong>$1,918</strong>
+                        </div>
+                        <div class="examples">
+                            <p>⚠️ High engagement, premium CPT</p>
+                            <p>📊 Josh Jefferson clip performance</p>
+                        </div>
+                    </div>
+
+                    <div class="visual-card">
+                        <h4>Golden Nugget / Data List</h4>
+                        <div class="metric-row">
+                            <span>Hook Rate:</span>
+                            <strong>25.28%</strong>
+                        </div>
+                        <div class="metric-row">
+                            <span>CPT:</span>
+                            <strong>$14.35</strong>
+                        </div>
+                        <div class="metric-row">
+                            <span>Total Spend:</span>
+                            <strong>$1,507</strong>
+                        </div>
+                        <div class="examples">
+                            <p>❌ "34-5 on props" struggled</p>
+                            <p>📊 Stats-heavy format underperformed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MATRIX SECTION -->
         <div class="matrix-container">
             <div class="matrix-title">
                 <h2>Performance Segmentation Matrix</h2>
-                <p>Quadrant analysis based on Hook Rate (engagement) and Trial Conversion efficiency</p>
+                <p>Quadrant analysis based on Hook Rate (engagement) and Cost per Trial (efficiency)</p>
             </div>
 
             <div class="matrix-wrapper">
@@ -330,29 +749,6 @@
                         <p style="color: white; font-size: 0.85rem; margin-bottom: 16px;">High Engagement, High Cost - Optimize conversion funnel</p>
                         
                         <div class="ad-card">
-                            <div class="ad-name">Fields Over (Benched QB)</div>
-                            <div class="ad-hook">"Didn't expect a QB who got benched to smash the over"</div>
-                            <div class="ad-metrics">
-                                <div class="metric">
-                                    <span class="metric-label">Hook Rate</span>
-                                    <span class="metric-value">45.41%</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-label">CPT</span>
-                                    <span class="metric-value">$19.48</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-label">Spend</span>
-                                    <span class="metric-value">$1,013</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-label">Trials</span>
-                                    <span class="metric-value">52</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="ad-card">
                             <div class="ad-name">Back By 10 (Ole Miss LSU)</div>
                             <div class="ad-hook">"While most slammed the over, smart fans locked in ML"</div>
                             <div class="ad-metrics">
@@ -365,12 +761,35 @@
                                     <span class="metric-value">$12.79</span>
                                 </div>
                                 <div class="metric">
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Tweet</span>
+                                </div>
+                                <div class="metric">
                                     <span class="metric-label">Spend</span>
                                     <span class="metric-value">$1,446</span>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">Fields Over (Benched QB)</div>
+                            <div class="ad-hook">"Didn't expect a QB who got benched to smash the over"</div>
+                            <div class="ad-metrics">
                                 <div class="metric">
-                                    <span class="metric-label">Trials</span>
-                                    <span class="metric-value">113</span>
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">45.41%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$19.48</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Fat Head + Slip</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$1,013</span>
                                 </div>
                             </div>
                         </div>
@@ -388,12 +807,58 @@
                                     <span class="metric-value">$14.58</span>
                                 </div>
                                 <div class="metric">
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Prop Slip</span>
+                                </div>
+                                <div class="metric">
                                     <span class="metric-label">Spend</span>
                                     <span class="metric-value">$991</span>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">TNF 49ers Props Under</div>
+                            <div class="ad-hook">"Shocked by Thursday night's Rams/49ers game?"</div>
+                            <div class="ad-metrics">
                                 <div class="metric">
-                                    <span class="metric-label">Trials</span>
-                                    <span class="metric-value">68</span>
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">40.57%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$10.20</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Score + Slip</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$8,610</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">Josh Jefferson Clip</div>
+                            <div class="ad-hook">"Let's fade a star wide receiver in a primetime game"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">39.37%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$17.28</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Podcast</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$1,918</span>
                                 </div>
                             </div>
                         </div>
@@ -408,29 +873,6 @@
                         <p style="color: white; font-size: 0.85rem; margin-bottom: 16px;">High Engagement, Low Cost - Scale these winners!</p>
                         
                         <div class="ad-card">
-                            <div class="ad-name">TNF 49ers Props Under</div>
-                            <div class="ad-hook">"Shocked by Thursday night's Rams/49ers game?"</div>
-                            <div class="ad-metrics">
-                                <div class="metric">
-                                    <span class="metric-label">Hook Rate</span>
-                                    <span class="metric-value">40.57%</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-label">CPT</span>
-                                    <span class="metric-value">$10.20</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-label">Spend</span>
-                                    <span class="metric-value">$8,610</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-label">Trials</span>
-                                    <span class="metric-value">844</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="ad-card">
                             <div class="ad-name">Giants TNF Dynamic</div>
                             <div class="ad-hook">"Shocked by Thursday night's Eagles/Giants game?"</div>
                             <div class="ad-metrics">
@@ -443,12 +885,12 @@
                                     <span class="metric-value">$9.53</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-label">Spend</span>
-                                    <span class="metric-value">$11,843</span>
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Score + Slip</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-label">Trials</span>
-                                    <span class="metric-value">1,243</span>
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$11,843</span>
                                 </div>
                             </div>
                         </div>
@@ -466,12 +908,12 @@
                                     <span class="metric-value">$9.59</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-label">Spend</span>
-                                    <span class="metric-value">$12,078</span>
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Score + Slip</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-label">Trials</span>
-                                    <span class="metric-value">1,260</span>
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$12,078</span>
                                 </div>
                             </div>
                         </div>
@@ -489,12 +931,12 @@
                                     <span class="metric-value">$8.04</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-label">Spend</span>
-                                    <span class="metric-value">$1,720</span>
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Prop Slip</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-label">Trials</span>
-                                    <span class="metric-value">214</span>
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$1,720</span>
                                 </div>
                             </div>
                         </div>
@@ -512,12 +954,12 @@
                                     <span class="metric-value">$7.22</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-label">Spend</span>
-                                    <span class="metric-value">$974</span>
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Unknown</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-label">Trials</span>
-                                    <span class="metric-value">135</span>
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$974</span>
                                 </div>
                             </div>
                         </div>
@@ -532,47 +974,70 @@
                         <p style="color: white; font-size: 0.85rem; margin-bottom: 16px;">Low Engagement, High Cost - Consider pausing or pivoting</p>
                         
                         <div class="ad-card">
-                            <div class="ad-name">6-Leg Morning Slate</div>
-                            <div class="ad-hook">"How did I hit this NFL 6-leg parlay?"</div>
+                            <div class="ad-name">Falcons Upset</div>
+                            <div class="ad-hook">Falcons upset narrative</div>
                             <div class="ad-metrics">
                                 <div class="metric">
                                     <span class="metric-label">Hook Rate</span>
-                                    <span class="metric-value">22.81%</span>
+                                    <span class="metric-value">36.33%</span>
                                 </div>
                                 <div class="metric">
                                     <span class="metric-label">CPT</span>
-                                    <span class="metric-value">$13.74</span>
+                                    <span class="metric-value">$19.52</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Fat Head + Slip</span>
                                 </div>
                                 <div class="metric">
                                     <span class="metric-label">Spend</span>
-                                    <span class="metric-value">$12,926</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-label">Trials</span>
-                                    <span class="metric-value">941</span>
+                                    <span class="metric-value">$1,093</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="ad-card">
-                            <div class="ad-name">7-Leg CFB Parlay</div>
-                            <div class="ad-hook">"How I nailed this 7-leg college football prediction?"</div>
+                            <div class="ad-name">Flagg Under (Video)</div>
+                            <div class="ad-hook">"How did I know DeAndre Hopkins was going over 20 yards"</div>
                             <div class="ad-metrics">
                                 <div class="metric">
                                     <span class="metric-label">Hook Rate</span>
-                                    <span class="metric-value">18.96%</span>
+                                    <span class="metric-value">34.86%</span>
                                 </div>
                                 <div class="metric">
                                     <span class="metric-label">CPT</span>
-                                    <span class="metric-value">$13.03</span>
+                                    <span class="metric-value">$19.45</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Prop Slip</span>
                                 </div>
                                 <div class="metric">
                                     <span class="metric-label">Spend</span>
-                                    <span class="metric-value">$1,798</span>
+                                    <span class="metric-value">$1,070</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">CFB Missed Out Last Week</div>
+                            <div class="ad-hook">"How did I spot Sacred Heart at +345 value?"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">34.56%</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-label">Trials</span>
-                                    <span class="metric-value">138</span>
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$15.69</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Prop Slip</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$2,965</span>
                                 </div>
                             </div>
                         </div>
@@ -590,12 +1055,58 @@
                                     <span class="metric-value">$14.35</span>
                                 </div>
                                 <div class="metric">
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Golden Nugget</span>
+                                </div>
+                                <div class="metric">
                                     <span class="metric-label">Spend</span>
                                     <span class="metric-value">$1,507</span>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">6-Leg Morning Slate</div>
+                            <div class="ad-hook">"How did I hit this NFL 6-leg parlay?"</div>
+                            <div class="ad-metrics">
                                 <div class="metric">
-                                    <span class="metric-label">Trials</span>
-                                    <span class="metric-value">105</span>
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">22.81%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$13.74</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Large Slip</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$12,926</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">7-Leg CFB Parlay</div>
+                            <div class="ad-hook">"How I nailed this 7-leg college football prediction?"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">18.96%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$13.03</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Large Slip</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$1,798</span>
                                 </div>
                             </div>
                         </div>
@@ -610,6 +1121,52 @@
                         <p style="color: white; font-size: 0.85rem; margin-bottom: 16px;">Efficient conversion despite lower engagement - Steady performers</p>
                         
                         <div class="ad-card">
+                            <div class="ad-name">Tre Tucker Under</div>
+                            <div class="ad-hook">"How did I know Trey Tucker was going under 43.5 yards?"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">39.61%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$10.41</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Fat Head + Slip</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$1,707</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">Rockets vs Thunder Opening</div>
+                            <div class="ad-hook">"Didn't expect Rockets to send Thunder into double OT?"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">37.78%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$14.72</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Final Score</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$4,107</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
                             <div class="ad-name">Curry Unders</div>
                             <div class="ad-hook">"Load up on Steph Curry overs on opening night?"</div>
                             <div class="ad-metrics">
@@ -622,35 +1179,12 @@
                                     <span class="metric-value">$10.83</span>
                                 </div>
                                 <div class="metric">
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Final Score</span>
+                                </div>
+                                <div class="metric">
                                     <span class="metric-label">Spend</span>
                                     <span class="metric-value">$3,280</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-label">Trials</span>
-                                    <span class="metric-value">303</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="ad-card">
-                            <div class="ad-name">Tre Tucker Under</div>
-                            <div class="ad-hook">"How I knew Trey Tucker was going under 43.5 yards?"</div>
-                            <div class="ad-metrics">
-                                <div class="metric">
-                                    <span class="metric-label">Hook Rate</span>
-                                    <span class="metric-value">39.61%</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-label">CPT</span>
-                                    <span class="metric-value">$10.41</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-label">Spend</span>
-                                    <span class="metric-value">$1,707</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-label">Trials</span>
-                                    <span class="metric-value">164</span>
                                 </div>
                             </div>
                         </div>
@@ -668,12 +1202,12 @@
                                     <span class="metric-value">$13.20</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-label">Spend</span>
-                                    <span class="metric-value">$3,894</span>
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Prop Slip</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-label">Trials</span>
-                                    <span class="metric-value">295</span>
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$3,894</span>
                                 </div>
                             </div>
                         </div>
@@ -691,12 +1225,12 @@
                                     <span class="metric-value">$13.22</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-label">Spend</span>
-                                    <span class="metric-value">$1,679</span>
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Score + Slip</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-label">Trials</span>
-                                    <span class="metric-value">127</span>
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$1,679</span>
                                 </div>
                             </div>
                         </div>
@@ -714,12 +1248,12 @@
                                     <span class="metric-value">$14.95</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-label">Spend</span>
-                                    <span class="metric-value">$4,425</span>
+                                    <span class="metric-label">Visual</span>
+                                    <span class="metric-value">Fat Head + Slip</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-label">Trials</span>
-                                    <span class="metric-value">296</span>
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$4,425</span>
                                 </div>
                             </div>
                         </div>
