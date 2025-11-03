@@ -3,560 +3,764 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rithmm Ad Performance Analysis</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Rithmm Ad Performance Matrix</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #581c87 50%, #0f172a 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
             min-height: 100vh;
-            padding: 2rem;
-            color: #fff;
         }
-        
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
-        
+
         .header {
             text-align: center;
-            margin-bottom: 3rem;
+            color: white;
+            margin-bottom: 40px;
         }
-        
+
         .header h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, #a78bfa, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
         }
-        
+
         .header p {
-            font-size: 1.25rem;
-            color: #c4b5fd;
+            font-size: 1.1rem;
+            opacity: 0.9;
         }
-        
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-        
-        .metric-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 1rem;
-            padding: 1.5rem;
-        }
-        
-        .metric-label {
-            color: #c4b5fd;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        
-        .metric-value {
-            font-size: 2rem;
-            font-weight: bold;
-        }
-        
-        .section {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 1rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .section h2 {
-            font-size: 1.75rem;
-            margin-bottom: 1rem;
-        }
-        
-        .section p {
-            color: #c4b5fd;
-            margin-bottom: 1.5rem;
-        }
-        
-        .quadrant-container {
-            position: relative;
-            width: 100%;
-            height: 600px;
-            margin: 2rem 0;
-        }
-        
-        .legend {
+
+        .stats-overview {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-top: 1.5rem;
+            gap: 20px;
+            margin-bottom: 40px;
         }
-        
-        .legend-item {
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card h3 {
+            font-size: 0.875rem;
+            color: #666;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .matrix-container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .matrix-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .matrix-title h2 {
+            font-size: 1.75rem;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .matrix-title p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .matrix-wrapper {
+            position: relative;
+            padding: 60px;
+        }
+
+        .axis-label {
+            position: absolute;
+            font-weight: 600;
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .axis-label.y-axis {
+            top: 50%;
+            left: -40px;
+            transform: rotate(-90deg) translateX(-50%);
+            transform-origin: center;
+        }
+
+        .axis-label.x-axis {
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+            height: 700px;
+        }
+
+        .quadrant {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 24px;
+            position: relative;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+
+        .quadrant:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .quadrant.stars {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-color: #fdcb6e;
+        }
+
+        .quadrant.question-marks {
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            border-color: #6c5ce7;
+        }
+
+        .quadrant.cash-cows {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-color: #00b894;
+        }
+
+        .quadrant.dogs {
+            background: linear-gradient(135deg, #ff7675 0%, #d63031 100%);
+            border-color: #d63031;
+        }
+
+        .quadrant-header {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
         }
-        
-        .legend-dot {
-            width: 1rem;
-            height: 1rem;
-            border-radius: 50%;
+
+        .quadrant-header h3 {
+            font-size: 1.25rem;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        
-        .comparison-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .winner-section {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 1rem;
-            padding: 1.5rem;
-        }
-        
-        .winner-section h3 {
-            color: #34d399;
+
+        .quadrant-header .icon {
             font-size: 1.5rem;
-            margin-bottom: 1rem;
         }
-        
-        .loser-section {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 1rem;
-            padding: 1.5rem;
+
+        .ad-card {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
         }
-        
-        .loser-section h3 {
-            color: #f87171;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+
+        .ad-card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
-        
-        .ad-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-        }
-        
+
         .ad-name {
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            color: #333;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            line-height: 1.3;
         }
-        
+
+        .ad-hook {
+            color: #666;
+            font-size: 0.8rem;
+            font-style: italic;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
         .ad-metrics {
-            font-size: 0.875rem;
-            color: #c4b5fd;
-        }
-        
-        .insights {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 1rem;
-            padding: 2rem;
-        }
-        
-        .insights h2 {
-            font-size: 1.75rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .insights p {
-            margin-bottom: 1rem;
-            line-height: 1.6;
-        }
-        
-        .chart-container {
-            position: relative;
-            height: 400px;
-            margin: 1.5rem 0;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-        
-        th, td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        th {
-            background: rgba(255, 255, 255, 0.05);
-            font-weight: 600;
-            color: #c4b5fd;
-        }
-        
-        .winner-badge {
-            background: #10b981;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
             font-size: 0.75rem;
-            font-weight: 600;
         }
-        
-        .loser-badge {
-            background: #ef4444;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            font-size: 0.75rem;
+
+        .metric {
+            background: #f8f9fa;
+            padding: 6px 8px;
+            border-radius: 4px;
+        }
+
+        .metric-label {
+            color: #666;
+            display: block;
+            font-size: 0.7rem;
+        }
+
+        .metric-value {
+            color: #333;
             font-weight: 600;
+            display: block;
+        }
+
+        .legend {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .legend h4 {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .legend-text {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .legend-text strong {
+            color: #333;
+            display: block;
+            margin-bottom: 2px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Rithmm Ad Performance Analysis</h1>
-            <p>Total Spend: $81,043 | Total Trials: 6,988 | Average CPT: $11.60</p>
+            <h1>🎯 Rithmm Ad Performance Matrix</h1>
+            <p>Strategic Analysis: Engagement vs. Conversion Performance</p>
         </div>
 
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <div class="metric-label">Avg Hook Rate</div>
-                <div class="metric-value">35.4%</div>
+        <div class="stats-overview">
+            <div class="stat-card">
+                <h3>Total Spend</h3>
+                <div class="value">$81K</div>
             </div>
-            <div class="metric-card">
-                <div class="metric-label">Avg Hold Rate</div>
-                <div class="metric-value">7.8%</div>
+            <div class="stat-card">
+                <h3>Total Installs</h3>
+                <div class="value">20,053</div>
             </div>
-            <div class="metric-card">
-                <div class="metric-label">Avg Cost Per Trial</div>
-                <div class="metric-value">$11.60</div>
+            <div class="stat-card">
+                <h3>Total Trials</h3>
+                <div class="value">6,988</div>
             </div>
-            <div class="metric-card">
-                <div class="metric-label">Hook → Trial Rate</div>
-                <div class="metric-value">0.39%</div>
+            <div class="stat-card">
+                <h3>Avg Hook Rate</h3>
+                <div class="value">35.4%</div>
+            </div>
+            <div class="stat-card">
+                <h3>Avg CPT</h3>
+                <div class="value">$11.60</div>
             </div>
         </div>
 
-        <div class="section">
-            <h2>📊 4-Quadrant Analysis: Hook Rate vs Cost Per Trial</h2>
-            <p>Winners are high hook rate + low cost. Losers are low hook rate + high cost.</p>
-            <div class="quadrant-container">
-                <canvas id="quadrantChart"></canvas>
+        <div class="matrix-container">
+            <div class="matrix-title">
+                <h2>Performance Segmentation Matrix</h2>
+                <p>Quadrant analysis based on Hook Rate (engagement) and Trial Conversion efficiency</p>
             </div>
+
+            <div class="matrix-wrapper">
+                <div class="axis-label y-axis">Hook Rate (Engagement) →</div>
+                <div class="axis-label x-axis">Cost per Trial (Efficiency) →</div>
+
+                <div class="matrix-grid">
+                    <!-- Question Marks: High Hook Rate, High CPT -->
+                    <div class="quadrant question-marks">
+                        <div class="quadrant-header">
+                            <span class="icon">❓</span>
+                            <h3>Question Marks</h3>
+                        </div>
+                        <p style="color: white; font-size: 0.85rem; margin-bottom: 16px;">High Engagement, High Cost - Optimize conversion funnel</p>
+                        
+                        <div class="ad-card">
+                            <div class="ad-name">Fields Over (Benched QB)</div>
+                            <div class="ad-hook">"Didn't expect a QB who got benched to smash the over"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">45.41%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$19.48</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$1,013</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Trials</span>
+                                    <span class="metric-value">52</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">Back By 10 (Ole Miss LSU)</div>
+                            <div class="ad-hook">"While most slammed the over, smart fans locked in ML"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">48.44%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$12.79</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$1,446</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Trials</span>
+                                    <span class="metric-value">113</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">Hopkins Catch Prop</div>
+                            <div class="ad-hook">"DeAndre Hopkins going over 20 yards on SNF"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">43.34%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$14.58</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$991</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Trials</span>
+                                    <span class="metric-value">68</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stars: High Hook Rate, Low CPT -->
+                    <div class="quadrant stars">
+                        <div class="quadrant-header">
+                            <span class="icon">⭐</span>
+                            <h3>Stars</h3>
+                        </div>
+                        <p style="color: white; font-size: 0.85rem; margin-bottom: 16px;">High Engagement, Low Cost - Scale these winners!</p>
+                        
+                        <div class="ad-card">
+                            <div class="ad-name">TNF 49ers Props Under</div>
+                            <div class="ad-hook">"Shocked by Thursday night's Rams/49ers game?"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">40.57%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$10.20</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$8,610</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Trials</span>
+                                    <span class="metric-value">844</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">Giants TNF Dynamic</div>
+                            <div class="ad-hook">"Shocked by Thursday night's Eagles/Giants game?"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">38.68%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$9.53</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$11,843</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Trials</span>
+                                    <span class="metric-value">1,243</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">Etienne Under Dynamic</div>
+                            <div class="ad-hook">"Shocked by Thursday nights Eagles/Giants game?"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">37.68%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$9.59</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$12,078</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Trials</span>
+                                    <span class="metric-value">1,260</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">Puka Under Dynamic</div>
+                            <div class="ad-hook">"Didn't expect Puka to tank on Monday night?"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">36.13%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$8.04</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$1,720</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Trials</span>
+                                    <span class="metric-value">214</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">Chiefs SNF Dynamic</div>
+                            <div class="ad-hook">Chiefs Sunday Night Football</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">33.62%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$7.22</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$974</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Trials</span>
+                                    <span class="metric-value">135</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dogs: Low Hook Rate, High CPT -->
+                    <div class="quadrant dogs">
+                        <div class="quadrant-header">
+                            <span class="icon">🐕</span>
+                            <h3>Dogs</h3>
+                        </div>
+                        <p style="color: white; font-size: 0.85rem; margin-bottom: 16px;">Low Engagement, High Cost - Consider pausing or pivoting</p>
+                        
+                        <div class="ad-card">
+                            <div class="ad-name">6-Leg Morning Slate</div>
+                            <div class="ad-hook">"How did I hit this NFL 6-leg parlay?"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">22.81%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$13.74</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$12,926</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Trials</span>
+                                    <span class="metric-value">941</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">7-Leg CFB Parlay</div>
+                            <div class="ad-hook">"How I nailed this 7-leg college football prediction?"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">18.96%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$13.03</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$1,798</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Trials</span>
+                                    <span class="metric-value">138</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">32-4 Golden Nugget</div>
+                            <div class="ad-hook">"34-5 on props in week 5"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">25.28%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$14.35</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$1,507</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Trials</span>
+                                    <span class="metric-value">105</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cash Cows: Low Hook Rate, Low CPT -->
+                    <div class="quadrant cash-cows">
+                        <div class="quadrant-header">
+                            <span class="icon">💰</span>
+                            <h3>Cash Cows</h3>
+                        </div>
+                        <p style="color: white; font-size: 0.85rem; margin-bottom: 16px;">Efficient conversion despite lower engagement - Steady performers</p>
+                        
+                        <div class="ad-card">
+                            <div class="ad-name">Curry Unders</div>
+                            <div class="ad-hook">"Load up on Steph Curry overs on opening night?"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">35.43%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$10.83</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$3,280</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Trials</span>
+                                    <span class="metric-value">303</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">Tre Tucker Under</div>
+                            <div class="ad-hook">"How I knew Trey Tucker was going under 43.5 yards?"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">39.61%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$10.41</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$1,707</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Trials</span>
+                                    <span class="metric-value">164</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">Nico Collins MNF</div>
+                            <div class="ad-hook">"Didn't expect Nico Collins to get shut down on MNF?"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">34.49%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$13.20</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$3,894</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Trials</span>
+                                    <span class="metric-value">295</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">Minnesota Upset</div>
+                            <div class="ad-hook">"Minnesota upset No 25 Nebraska - Rithmm predicted it"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">33.21%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$13.22</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$1,679</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Trials</span>
+                                    <span class="metric-value">127</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ad-card">
+                            <div class="ad-name">Flagg Under</div>
+                            <div class="ad-hook">"Shocked Cooper Flagg scored just 2 points?"</div>
+                            <div class="ad-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Hook Rate</span>
+                                    <span class="metric-value">31.46%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPT</span>
+                                    <span class="metric-value">$14.95</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Spend</span>
+                                    <span class="metric-value">$4,425</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Trials</span>
+                                    <span class="metric-value">296</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="legend">
-                <div class="legend-item">
-                    <div class="legend-dot" style="background: #10b981;"></div>
-                    <span>Winner (5 ads)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-dot" style="background: #f59e0b;"></div>
-                    <span>High Hook, High Cost</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-dot" style="background: #6366f1;"></div>
-                    <span>Low Hook, Low Cost</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-dot" style="background: #ef4444;"></div>
-                    <span>Loser (6 ads)</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="comparison-grid">
-            <div class="winner-section">
-                <h3>🏆 Winners (5 ads)</h3>
-                <div class="ad-item">
-                    <div class="ad-name">Etienne Under</div>
-                    <div class="ad-metrics">CPT: $9.59 | Hook: 37.7% | Trials: 1,260</div>
-                    <div class="ad-metrics">Creative: Score + Prop</div>
-                </div>
-                <div class="ad-item">
-                    <div class="ad-name">Giants TNF</div>
-                    <div class="ad-metrics">CPT: $9.53 | Hook: 38.7% | Trials: 1,243</div>
-                    <div class="ad-metrics">Creative: Score + Prop</div>
-                </div>
-                <div class="ad-item">
-                    <div class="ad-name">Puka Under</div>
-                    <div class="ad-metrics">CPT: $8.04 | Hook: 36.1% | Trials: 214</div>
-                    <div class="ad-metrics">Creative: Prop Slip</div>
-                </div>
-                <div class="ad-item">
-                    <div class="ad-name">TNF 9ers Props</div>
-                    <div class="ad-metrics">CPT: $10.20 | Hook: 40.6% | Trials: 844</div>
-                    <div class="ad-metrics">Creative: Score + Prop</div>
-                </div>
-                <div class="ad-item">
-                    <div class="ad-name">Chiefs SNF</div>
-                    <div class="ad-metrics">CPT: $7.22 | Hook: 33.6% | Trials: 135</div>
-                    <div class="ad-metrics">Creative: N/A</div>
+                <h4>📊 Matrix Interpretation Guide</h4>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);"></div>
+                        <div class="legend-text">
+                            <strong>⭐ Stars</strong>
+                            High engagement + efficient conversion. Your winning formula - scale these aggressively.
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);"></div>
+                        <div class="legend-text">
+                            <strong>❓ Question Marks</strong>
+                            Great engagement but expensive to convert. Test new CTAs or landing pages to improve efficiency.
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);"></div>
+                        <div class="legend-text">
+                            <strong>💰 Cash Cows</strong>
+                            Reliable, efficient converters. Maintain these while testing ways to boost engagement.
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(135deg, #ff7675 0%, #d63031 100%);"></div>
+                        <div class="legend-text">
+                            <strong>🐕 Dogs</strong>
+                            Low engagement AND expensive. Consider pausing or complete creative refresh needed.
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="loser-section">
-                <h3>📉 Losers (6 ads)</h3>
-                <div class="ad-item">
-                    <div class="ad-name">6-Leg Morning Slate</div>
-                    <div class="ad-metrics">CPT: $13.74 | Hook: 22.8% | Trials: 941</div>
-                    <div class="ad-metrics">Creative: Large Slip</div>
-                </div>
-                <div class="ad-item">
-                    <div class="ad-name">Flagg Under</div>
-                    <div class="ad-metrics">CPT: $14.95 | Hook: 31.5% | Trials: 296</div>
-                    <div class="ad-metrics">Creative: Fat Head + Prop</div>
-                </div>
-                <div class="ad-item">
-                    <div class="ad-name">Rockets vs Thunder</div>
-                    <div class="ad-metrics">CPT: $14.72 | Hook: 37.8% | Trials: 279</div>
-                    <div class="ad-metrics">Creative: Score Card</div>
-                </div>
-                <div class="ad-item">
-                    <div class="ad-name">32-4 Props</div>
-                    <div class="ad-metrics">CPT: $14.35 | Hook: 25.3% | Trials: 105</div>
-                    <div class="ad-metrics">Creative: Golden Nugget</div>
-                </div>
-                <div class="ad-item">
-                    <div class="ad-name">CFB Sacred Heart</div>
-                    <div class="ad-metrics">CPT: $15.69 | Hook: 34.6% | Trials: 189</div>
-                    <div class="ad-metrics">Creative: Prop Slip</div>
-                </div>
-                <div class="ad-item">
-                    <div class="ad-name">Josh Jefferson</div>
-                    <div class="ad-metrics">CPT: $17.28 | Hook: 39.4% | Trials: 111</div>
-                    <div class="ad-metrics">Creative: Podcast</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>📈 Performance by Creative Type</h2>
-            <div class="chart-container">
-                <canvas id="creativeChart"></canvas>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>📊 Complete Ad Performance Data</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Ad Name</th>
-                        <th>Spend</th>
-                        <th>Trials</th>
-                        <th>CPT</th>
-                        <th>Hook Rate</th>
-                        <th>Creative</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="adTable"></tbody>
-            </table>
-        </div>
-
-        <div class="insights">
-            <h2>🔍 Key Insights</h2>
-            <p>✅ <strong>Winner Formula:</strong> Score Card + Prop Slip creatives dominate the winner quadrant with high hook rates (38-40%) and low CPT ($9-10).</p>
-            <p>✅ <strong>Best Creative Type:</strong> Prop Slip averages the lowest CPT, followed by Score Card formats.</p>
-            <p>⚠️ <strong>Avoid:</strong> Fat Head + Prop creative tends toward higher costs with lower conversion efficiency.</p>
-            <p>📊 <strong>Hook Rate Sweet Spot:</strong> Ads with 36-41% hook rates consistently deliver better value.</p>
-            <p>💡 <strong>Scale Opportunity:</strong> Chiefs SNF has the lowest CPT ($7.22) - consider increasing spend on similar formats.</p>
-            <p>🎯 <strong>Large Slip Warning:</strong> Both large slip ads (6-Leg Morning Slate, 7-Leg Parlay) have low hook rates (~20%) - may need creative refresh.</p>
         </div>
     </div>
-
-    <script>
-        const adData = [
-            { name: "6-Leg Morning Slate", spend: 12926, installs: 2926, trials: 941, hookRate: 22.81, holdRate: 11.25, cpt: 13.74, creative: "Large Slip" },
-            { name: "Etienne Under", spend: 12078, installs: 3629, trials: 1260, hookRate: 37.68, holdRate: 5.97, cpt: 9.59, creative: "Score + Prop" },
-            { name: "Giants TNF", spend: 11843, installs: 3461, trials: 1243, hookRate: 38.68, holdRate: 13.10, cpt: 9.53, creative: "Score + Prop" },
-            { name: "TNF 9ers Props", spend: 8610, installs: 2518, trials: 844, hookRate: 40.57, holdRate: 8.60, cpt: 10.20, creative: "Score + Prop" },
-            { name: "Flagg Under", spend: 4425, installs: 796, trials: 296, hookRate: 31.46, holdRate: 7.11, cpt: 14.95, creative: "Fat Head + Prop" },
-            { name: "Rockets vs Thunder", spend: 4107, installs: 768, trials: 279, hookRate: 37.78, holdRate: 7.18, cpt: 14.72, creative: "Score Card" },
-            { name: "Nico Collins MNF", spend: 3894, installs: 883, trials: 295, hookRate: 34.49, holdRate: 6.31, cpt: 13.20, creative: "Prop Slip" },
-            { name: "Curry Unders", spend: 3280, installs: 787, trials: 303, hookRate: 35.43, holdRate: 6.20, cpt: 10.83, creative: "Score Card" },
-            { name: "CFB Sacred Heart", spend: 2965, installs: 573, trials: 189, hookRate: 34.56, holdRate: 2.94, cpt: 15.69, creative: "Prop Slip" },
-            { name: "Josh Jefferson", spend: 1918, installs: 273, trials: 111, hookRate: 39.37, holdRate: 9.42, cpt: 17.28, creative: "Podcast" },
-            { name: "7-Leg Parlay", spend: 1798, installs: 403, trials: 138, hookRate: 18.96, holdRate: 11.71, cpt: 13.03, creative: "Large Slip" },
-            { name: "Puka Under", spend: 1720, installs: 513, trials: 214, hookRate: 36.13, holdRate: 9.25, cpt: 8.04, creative: "Prop Slip" },
-            { name: "Tre Tucker Under", spend: 1707, installs: 455, trials: 164, hookRate: 39.61, holdRate: 3.47, cpt: 10.41, creative: "Fat Head + Prop" },
-            { name: "Minnesota Upset", spend: 1679, installs: 329, trials: 127, hookRate: 33.21, holdRate: 4.46, cpt: 13.22, creative: "Score + Prop" },
-            { name: "32-4 Props", spend: 1507, installs: 293, trials: 105, hookRate: 25.28, holdRate: 6.13, cpt: 14.35, creative: "Golden Nugget" },
-            { name: "Back By 10", spend: 1446, installs: 271, trials: 113, hookRate: 48.44, holdRate: 6.28, cpt: 12.79, creative: "Tweet" },
-            { name: "Falcons Upset", spend: 1093, installs: 209, trials: 56, hookRate: 36.33, holdRate: 7.65, cpt: 19.52, creative: "Fat Head + Prop" },
-            { name: "Hopkins Catch", spend: 991, installs: 294, trials: 68, hookRate: 43.34, holdRate: 8.59, cpt: 14.58, creative: "Prop Slip" },
-            { name: "Chiefs SNF", spend: 974, installs: 347, trials: 135, hookRate: 33.62, holdRate: 9.12, cpt: 7.22, creative: "N/A" }
-        ];
-
-        const avgHookRate = adData.reduce((sum, ad) => sum + ad.hookRate, 0) / adData.length;
-        const avgCPT = adData.reduce((sum, ad) => sum + ad.cpt, 0) / adData.length;
-
-        // Populate table
-        const tableBody = document.getElementById('adTable');
-        adData.forEach(ad => {
-            const isWinner = ad.hookRate >= avgHookRate && ad.cpt <= avgCPT;
-            const isLoser = ad.hookRate < avgHookRate && ad.cpt > avgCPT;
-            const status = isWinner ? 'Winner' : isLoser ? 'Loser' : 'Mixed';
-            const badgeClass = isWinner ? 'winner-badge' : isLoser ? 'loser-badge' : '';
-            
-            const row = `
-                <tr>
-                    <td>${ad.name}</td>
-                    <td>$${ad.spend.toLocaleString()}</td>
-                    <td>${ad.trials}</td>
-                    <td>$${ad.cpt.toFixed(2)}</td>
-                    <td>${ad.hookRate.toFixed(1)}%</td>
-                    <td>${ad.creative}</td>
-                    <td><span class="${badgeClass}">${status}</span></td>
-                </tr>
-            `;
-            tableBody.innerHTML += row;
-        });
-
-        // Quadrant Chart
-        const quadrantData = adData.map(ad => ({
-            x: ad.hookRate,
-            y: ad.cpt,
-            label: ad.name,
-            color: ad.hookRate >= avgHookRate && ad.cpt <= avgCPT ? '#10b981' :
-                   ad.hookRate >= avgHookRate && ad.cpt > avgCPT ? '#f59e0b' :
-                   ad.hookRate < avgHookRate && ad.cpt <= avgCPT ? '#6366f1' : '#ef4444'
-        }));
-
-        new Chart(document.getElementById('quadrantChart'), {
-            type: 'scatter',
-            data: {
-                datasets: [{
-                    label: 'Ads',
-                    data: quadrantData,
-                    backgroundColor: quadrantData.map(d => d.color),
-                    pointRadius: 8,
-                    pointHoverRadius: 12
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const ad = adData[context.dataIndex];
-                                return [
-                                    ad.name,
-                                    `Hook Rate: ${ad.hookRate.toFixed(1)}%`,
-                                    `CPT: $${ad.cpt.toFixed(2)}`,
-                                    `Trials: ${ad.trials}`,
-                                    `Creative: ${ad.creative}`
-                                ];
-                            }
-                        }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                xMin: avgHookRate,
-                                xMax: avgHookRate,
-                                borderColor: 'rgba(255, 255, 255, 0.5)',
-                                borderWidth: 2,
-                                borderDash: [5, 5]
-                            },
-                            line2: {
-                                type: 'line',
-                                yMin: avgCPT,
-                                yMax: avgCPT,
-                                borderColor: 'rgba(255, 255, 255, 0.5)',
-                                borderWidth: 2,
-                                borderDash: [5, 5]
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        title: { display: true, text: 'Hook Rate (%)', color: '#fff' },
-                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                        ticks: { color: '#fff' }
-                    },
-                    y: {
-                        title: { display: true, text: 'Cost Per Trial ($)', color: '#fff' },
-                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                        ticks: { color: '#fff' }
-                    }
-                }
-            }
-        });
-
-        // Creative Type Performance Chart
-        const creativeTypes = {};
-        adData.forEach(ad => {
-            if (!creativeTypes[ad.creative]) {
-                creativeTypes[ad.creative] = { totalCPT: 0, totalHook: 0, count: 0 };
-            }
-            creativeTypes[ad.creative].totalCPT += ad.cpt;
-            creativeTypes[ad.creative].totalHook += ad.hookRate;
-            creativeTypes[ad.creative].count += 1;
-        });
-
-        const creativeData = Object.keys(creativeTypes).map(key => ({
-            creative: key,
-            avgCPT: creativeTypes[key].totalCPT / creativeTypes[key].count,
-            avgHook: creativeTypes[key].totalHook / creativeTypes[key].count
-        })).sort((a, b) => a.avgCPT - b.avgCPT);
-
-        new Chart(document.getElementById('creativeChart'), {
-            type: 'bar',
-            data: {
-                labels: creativeData.map(d => d.creative),
-                datasets: [
-                    {
-                        label: 'Avg CPT ($)',
-                        data: creativeData.map(d => d.avgCPT),
-                        backgroundColor: '#a78bfa'
-                    },
-                    {
-                        label: 'Avg Hook Rate (%)',
-                        data: creativeData.map(d => d.avgHook),
-                        backgroundColor: '#34d399'
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        labels: { color: '#fff' }
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                        ticks: { color: '#fff' }
-                    },
-                    y: {
-                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                        ticks: { color: '#fff' }
-                    }
-                }
-            }
-        });
-    </script>
 </body>
 </html>
